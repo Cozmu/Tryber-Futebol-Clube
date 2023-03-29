@@ -1,7 +1,8 @@
 import { DataTypes, InferAttributes, Model } from 'sequelize';
 import database from './index';
+import IUser from './interfaces/IUser.model';
 
-class UsersModel extends Model<InferAttributes<UsersModel>> {
+class UserModel extends Model<InferAttributes<UserModel>> implements IUser {
   declare id:number;
   declare username:string;
   declare role:string;
@@ -9,7 +10,7 @@ class UsersModel extends Model<InferAttributes<UsersModel>> {
   declare password:string;
 }
 
-UsersModel.init({
+UserModel.init({
   id: {
     type: DataTypes.NUMBER,
     primaryKey: true,
@@ -38,4 +39,4 @@ UsersModel.init({
   timestamps: false,
 });
 
-export default UsersModel;
+export default UserModel;

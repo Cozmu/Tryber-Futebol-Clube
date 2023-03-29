@@ -1,4 +1,5 @@
 import * as express from 'express';
+import errorMiddleware from './middlewares/erro-middleware';
 import TeamsRouter from './routers/Teams.router';
 
 class App {
@@ -27,6 +28,7 @@ class App {
 
   private Routers():void {
     this.app.use('/teams', TeamsRouter);
+    this.app.use(errorMiddleware);
   }
 
   public start(PORT: string | number):void {
