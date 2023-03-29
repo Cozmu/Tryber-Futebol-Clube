@@ -1,12 +1,13 @@
 import { DataTypes, InferAttributes, Model } from 'sequelize';
 import database from './index';
+import ITeams from './interfaces/ITeams.model';
 
-class Teams extends Model<InferAttributes<Teams>> {
+class TeamsModel extends Model<InferAttributes<TeamsModel>> implements ITeams {
   declare id:number;
   declare teamName:string;
 }
 
-Teams.init({
+TeamsModel.init({
   id: {
     type: DataTypes.NUMBER,
     primaryKey: true,
@@ -24,4 +25,4 @@ Teams.init({
   underscored: true,
 });
 
-export default Teams;
+export default TeamsModel;
