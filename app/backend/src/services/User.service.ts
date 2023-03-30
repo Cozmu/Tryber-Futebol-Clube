@@ -2,7 +2,7 @@ import { ModelStatic } from 'sequelize';
 import * as bcryt from 'bcryptjs';
 import IUserValidation from '../validations/interfaces/IUserValidations';
 import UserModel from '../database/models/Users.model';
-import { IUserRequest } from '../database/models/interfaces/IUser.model';
+import { IRoleUser, IUserRequest, IUserResult } from '../database/models/interfaces/IUser.model';
 import IUserService from './interfaces/IUser.service';
 import InvalidParamError from '../errors/invalide-params-error';
 
@@ -12,15 +12,26 @@ class UserService implements IUserService {
     private _UserModel:ModelStatic<UserModel>,
   ) {}
 
-  async checkUser(user: IUserRequest): Promise<string> {
-    this._UserValidation.validateFields(user.email, user.password);
+  async getRoleUser(email: string): Promise<IRoleUser | null> {
     const result = await this._UserModel.findOne({
-      where: { email: user.email },
+      where: { email },
+      attributes: ['role'],
     });
-    if (!result || !bcryt.compareSync(user.password, result.password)) {
+    return result;
+  }
+
+  async checkUser(user: IUserRequest): Promise<IUserResult> {
+    const { email, password } = user;
+    this._UserValidation.validateFields(email, password);
+    const result = await this._UserModel.findOne({
+      where: { email },
+      // attributes: { exclude: ['password'] },
+    });
+    if (!result || !bcryt.compareSync(password, result.password)) {
       throw new InvalidParamError('Invalid email or password');
     }
-    return result.email;
+    const { id, username, role } = result;
+    return { id, username, role, email };
   }
 }
 

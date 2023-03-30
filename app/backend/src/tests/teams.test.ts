@@ -20,7 +20,7 @@ describe('REQUISITO 2 - Cobrir rota /teams com metodo get', () => {
       .stub(TeamsModel, 'findAll')
       .resolves(teams as TeamsModel[]);
     
-    chaiHttpResponse = await chai.request(app).get('/teams');
+    chaiHttpResponse = await chai.request(app).get('/teams'); //send
     
     expect(chaiHttpResponse.body).to.deep.equal([
       {

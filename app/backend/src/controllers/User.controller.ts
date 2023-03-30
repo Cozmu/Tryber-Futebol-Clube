@@ -8,6 +8,13 @@ class UserController implements IUserController {
     private _UserService:IUserService,
   ) {}
 
+  async getRoleUser(req: Request, res: Response): Promise<Response> {
+    const { user } = req.body;
+    console.log(user.data.email);
+    const result = await this._UserService.getRoleUser(user.data.email);
+    return res.status(200).json(result);
+  }
+
   async register(req:Request, res:Response, next:NextFunction): Promise<Response | void> {
     try {
       const result = await this._UserService.checkUser(req.body);
