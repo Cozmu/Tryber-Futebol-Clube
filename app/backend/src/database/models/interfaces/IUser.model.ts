@@ -1,13 +1,15 @@
 interface IUserRequest {
-  username:string;
-  role:string;
   email:string;
   password:string;
 }
 
+type IUserResult = Omit<IUserRequest, 'password'>;
+
 interface IUser extends IUserRequest {
   id:number;
+  username:string;
+  role:string;
 }
 
-export { IUserRequest };
+export { IUserRequest, IUserResult };
 export default IUser;

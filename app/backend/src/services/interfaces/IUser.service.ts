@@ -1,7 +1,7 @@
-import IUser, { IUserRequest } from '../../database/models/interfaces/IUser.model';
+import { IUserRequest, IUserResult } from '../../database/models/interfaces/IUser.model';
 
 interface IUserService {
-  create(user:IUserRequest):Promise<IUser>
+  checkUser(user:IUserRequest):Promise<IUserResult | void>
 }
 
 export default IUserService;
