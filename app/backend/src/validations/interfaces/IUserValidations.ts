@@ -1,5 +1,5 @@
 interface IUserValidation {
-  validateEmail(email:string):void
+  validateFields(email:string, password:string):void
 }
 
 export default IUserValidation;

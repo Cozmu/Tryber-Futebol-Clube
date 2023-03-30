@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import IUserService from '../services/interfaces/IUser.service';
 import IUserController from './interfaces/IUser.controller';
+import authFunctions from '../auth/authFunctions';
 
 class UserController implements IUserController {
   constructor(
@@ -10,7 +11,8 @@ class UserController implements IUserController {
   async register(req:Request, res:Response, next:NextFunction): Promise<Response | void> {
     try {
       const result = await this._UserService.checkUser(req.body);
-      return res.status(200).json(result);
+      const generateToken = authFunctions.createToken(result);
+      return res.status(200).json({ token: generateToken });
     } catch (error) {
       next(error);
     }
