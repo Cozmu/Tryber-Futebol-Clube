@@ -5,15 +5,15 @@ import ITeamsService from './interfaces/ITeams.service';
 
 class TeamsService implements ITeamsService {
   constructor(
-    private _TeamsModel:ModelStatic<TeamsModel>,
+    private _teamsModel:ModelStatic<TeamsModel>,
   ) {}
 
   async getAll(): Promise<ITeams[]> {
-    return this._TeamsModel.findAll();
+    return this._teamsModel.findAll();
   }
 
   async getById(id: number): Promise<ITeams | null> {
-    return this._TeamsModel.findByPk(id);
+    return this._teamsModel.findByPk(id);
   }
 }
 

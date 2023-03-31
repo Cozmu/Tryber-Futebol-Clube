@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('REQUISITO 2 - Cobrir rota /teams com metodo get', () => {
+describe('Cobrir rota /teams com metodo get', () => {
   let chaiHttpResponse: Response;
   it('Verifica se através da rota /teams, todos os times devem ser retornados', async () => {
     sinon
@@ -22,6 +22,7 @@ describe('REQUISITO 2 - Cobrir rota /teams com metodo get', () => {
     
     chaiHttpResponse = await chai.request(app).get('/teams'); //send
     
+    expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body).to.deep.equal([
       {
         "id": 1,
@@ -88,7 +89,7 @@ describe('REQUISITO 2 - Cobrir rota /teams com metodo get', () => {
         "teamName": "São Paulo"
       }
     ]);
-
+    
   });
 
   afterEach(() => {
@@ -96,21 +97,33 @@ describe('REQUISITO 2 - Cobrir rota /teams com metodo get', () => {
   });
 });
 
-describe('REQUISITO 5 - Cobrir rota /teams com metodo get pelo id', () => {
+describe('Cobrir rota /teams/:id com metodo get ', () => {
   let chaiHttpResponse: Response;
-  it('Verifica se através da rota /teams:id, o times do id correspondete devem ser retornados', async () => {
+  it('Verifica se através da rota /teams/:id, o times do id correspondete devem ser retornados', async () => {
     sinon
       .stub(TeamsModel, 'findByPk')
       .resolves(teams[0] as TeamsModel);
     
-    chaiHttpResponse = await chai.request(app).get('/teams/:id');
+    chaiHttpResponse = await chai.request(app).get('/teams/1');
     
+    expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body).to.deep.equal(
     {
       "id": 1,
       "teamName": "Avaí/Kindermann"
     });
     
+  });
+
+  it('Verifique se através da rota /temas/:id com id inexistente a menssagem "Time não encontrado" e retornado', async () => {
+    sinon
+      .stub(TeamsModel, 'findByPk')
+      .resolves(null);
+
+    chaiHttpResponse = await chai.request(app).get('/teams/99999999999999999999');
+
+    expect(chaiHttpResponse.status).to.be.equal(404);
+    expect(chaiHttpResponse.body).to.deep.equal({ message: 'Time não encontrado' });
   });
 
   afterEach(() => {

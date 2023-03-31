@@ -4,17 +4,17 @@ import ITeamsController from './interfaces/ITeams.controller';
 
 class TeamsController implements ITeamsController {
   constructor(
-    private _TeamsService:ITeamsService,
+    private _teamsService:ITeamsService,
   ) {}
 
   async listAll(_req:Request, res:Response): Promise<Response> {
-    const teamsResult = await this._TeamsService.getAll();
+    const teamsResult = await this._teamsService.getAll();
     return res.status(200).json(teamsResult);
   }
 
   async listById(req: Request, res:Response): Promise<Response> {
     const { id } = req.params;
-    const teamResult = await this._TeamsService.getById(Number(id));
+    const teamResult = await this._teamsService.getById(Number(id));
     if (teamResult === null) {
       return res.status(404).json({ message: 'Time não encontrado' });
     }

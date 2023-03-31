@@ -8,12 +8,12 @@ import InvalidParamError from '../errors/invalide-params-error';
 
 class UserService implements IUserService {
   constructor(
-    private _UserValidation:IUserValidation,
-    private _UserModel:ModelStatic<UserModel>,
+    private _userValidation:IUserValidation,
+    private _userModel:ModelStatic<UserModel>,
   ) {}
 
   async getRoleUser(email: string): Promise<IRoleUser | null> {
-    const result = await this._UserModel.findOne({
+    const result = await this._userModel.findOne({
       where: { email },
       attributes: ['role'],
     });
@@ -22,8 +22,8 @@ class UserService implements IUserService {
 
   async checkUser(user: IUserRequest): Promise<IUserResult> {
     const { email, password } = user;
-    this._UserValidation.validateFields(email, password);
-    const result = await this._UserModel.findOne({
+    this._userValidation.validateFields(email, password);
+    const result = await this._userModel.findOne({
       where: { email },
       // attributes: { exclude: ['password'] },
     });

@@ -5,19 +5,19 @@ import authFunctions from '../auth/authFunctions';
 
 class UserController implements IUserController {
   constructor(
-    private _UserService:IUserService,
+    private _userService:IUserService,
   ) {}
 
   async getRoleUser(req: Request, res: Response): Promise<Response> {
     const { user } = req.body;
     console.log(user.data.email);
-    const result = await this._UserService.getRoleUser(user.data.email);
+    const result = await this._userService.getRoleUser(user.data.email);
     return res.status(200).json(result);
   }
 
   async register(req:Request, res:Response, next:NextFunction): Promise<Response | void> {
     try {
-      const result = await this._UserService.checkUser(req.body);
+      const result = await this._userService.checkUser(req.body);
       const generateToken = authFunctions.createToken(result);
       return res.status(200).json({ token: generateToken });
     } catch (error) {
