@@ -9,7 +9,7 @@ class MatchesModel extends Model<InferAttributes<MatchesModel>> implements IMatc
   declare homeTeamGoals:number;
   declare awayTeamId:number;
   declare awayTeamGoals:number;
-  declare inProgress:number;
+  declare inProgress:boolean;
 }
 
 MatchesModel.init({

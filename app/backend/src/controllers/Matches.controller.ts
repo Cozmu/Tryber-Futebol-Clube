@@ -7,8 +7,9 @@ class MatchesController implements IMatchesController {
     private _matchesService:MatchesService,
   ) {}
 
-  async listAll(_req:Request, res:Response): Promise<Response> {
-    const result = await this._matchesService.getAll();
+  async listAll(req:Request, res:Response): Promise<Response> {
+    const { inProgress } = req.query;
+    const result = await this._matchesService.getAll(inProgress as string);
     return res.status(200).json(result);
   }
 }

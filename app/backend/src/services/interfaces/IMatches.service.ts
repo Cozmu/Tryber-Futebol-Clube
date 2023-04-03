@@ -1,7 +1,7 @@
 import IMatches from '../../database/models/interfaces/IMatches.model';
 
 interface IMatchesService {
-  getAll():Promise<IMatches[]>
+  getAll(InProgress:string):Promise<IMatches[]>
 }
 
 export default IMatchesService;

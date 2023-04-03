@@ -9,7 +9,16 @@ class MatchesService implements IMatchesService {
     private _matchesModel:ModelStatic<MatchesModel>,
   ) {}
 
-  async getAll(): Promise<IMatches[]> {
+  async getAll(inProgress:string): Promise<IMatches[]> {
+    if (inProgress) {
+      return this._matchesModel.findAll({
+        where: { inProgress: inProgress === 'true' },
+        include: [
+          { model: TeamsModel, as: 'homeTeam', attributes: ['teamName'] },
+          { model: TeamsModel, as: 'awayTeam', attributes: ['teamName'] },
+        ],
+      });
+    }
     return this._matchesModel.findAll({
       include: [
         { model: TeamsModel, as: 'homeTeam', attributes: ['teamName'] },
