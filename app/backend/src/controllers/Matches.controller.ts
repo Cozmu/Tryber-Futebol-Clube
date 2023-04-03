@@ -12,6 +12,12 @@ class MatchesController implements IMatchesController {
     const result = await this._matchesService.getAll(inProgress as string);
     return res.status(200).json(result);
   }
+
+  async updatePatch(req:Request, res:Response): Promise<Response> {
+    const { id } = req.params;
+    await this._matchesService.updatePatch(Number(id));
+    return res.status(200).json({ message: 'Finished' });
+  }
 }
 
 export default MatchesController;

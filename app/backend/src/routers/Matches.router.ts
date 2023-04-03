@@ -10,6 +10,10 @@ const matchesService = new MatchesService(MatchesModel);
 const matchesController = new MatchesController(matchesService);
 
 router.get('/', matchesController.listAll.bind(matchesController));
-router.patch('/:id/finish', validateToken);
+router.patch(
+  '/:id/finish',
+  validateToken,
+  matchesController.updatePatch.bind(matchesController),
+);
 
 export default router;

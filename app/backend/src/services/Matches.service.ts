@@ -26,6 +26,13 @@ class MatchesService implements IMatchesService {
       ],
     });
   }
+
+  async updatePatch(id:number): Promise<void> {
+    await this._matchesModel.update(
+      { inProgress: false },
+      { where: { id } },
+    );
+  }
 }
 
 export default MatchesService;
