@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import validateToken from '../middlewares/validateToken';
-import UserValidation from '../validations/validationUser';
+import UserValidation from '../validations/UserValidation';
 import UserModel from '../database/models/Users.model';
 import UserService from '../services/User.service';
 import UserController from '../controllers/User.controller';

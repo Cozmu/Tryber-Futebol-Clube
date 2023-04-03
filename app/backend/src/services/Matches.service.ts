@@ -1,12 +1,14 @@
 import { ModelStatic } from 'sequelize';
+import IMatchesValidate from '../validations/interfaces/IMatchesValidation';
 import TeamsModel from '../database/models/Teams.model';
-import IMatches from '../database/models/interfaces/IMatches.model';
+import IMatches, { IRequestScoreboard } from '../database/models/interfaces/IMatches.model';
 import MatchesModel from '../database/models/Matchers.model';
 import IMatchesService from './interfaces/IMatches.service';
 
 class MatchesService implements IMatchesService {
   constructor(
     private _matchesModel:ModelStatic<MatchesModel>,
+    private _matchesValidate:IMatchesValidate,
   ) {}
 
   async getAll(inProgress:string): Promise<IMatches[]> {
@@ -27,10 +29,23 @@ class MatchesService implements IMatchesService {
     });
   }
 
-  async updatePatch(id:number): Promise<void> {
+  async updateMatchProgression(id:number): Promise<void> {
     await this._matchesModel.update(
       { inProgress: false },
       { where: { id } },
+    );
+  }
+
+  async getMatchesById(id:number): Promise<void> {
+    const result = await this._matchesModel.findByPk(id);
+    this._matchesValidate.checkIfTheMatchExists(result);
+  }
+
+  async updateMatchScore(id:number, body:IRequestScoreboard): Promise<void> {
+    await this.getMatchesById(id);
+    await this._matchesModel.update(
+      body,
+      { where: { id, inProgress: true } },
     );
   }
 }
