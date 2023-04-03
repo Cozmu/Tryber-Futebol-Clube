@@ -1,9 +1,9 @@
 import { DataTypes, InferAttributes, Model } from 'sequelize';
 import database from './index';
-import IMatcher from './interfaces/IMatcher.model';
+import IMatches from './interfaces/IMatches.model';
 import TeamsModel from './Teams.model';
 
-class MatcherModel extends Model<InferAttributes<MatcherModel>> implements IMatcher {
+class MatchesModel extends Model<InferAttributes<MatchesModel>> implements IMatches {
   declare id:number;
   declare homeTeamId:number;
   declare homeTeamGoals:number;
@@ -12,7 +12,7 @@ class MatcherModel extends Model<InferAttributes<MatcherModel>> implements IMatc
   declare inProgress:number;
 }
 
-MatcherModel.init({
+MatchesModel.init({
   id: {
     type: DataTypes.NUMBER,
     primaryKey: true,
@@ -64,7 +64,7 @@ MatcherModel.init({
   underscored: true,
 });
 
-MatcherModel.belongsTo(TeamsModel, { foreignKey: 'homeTeamId', as: 'homeTeam' });
-MatcherModel.belongsTo(TeamsModel, { foreignKey: 'awayTeamId', as: 'awayTeam' });
+MatchesModel.belongsTo(TeamsModel, { foreignKey: 'homeTeamId', as: 'homeTeam' });
+MatchesModel.belongsTo(TeamsModel, { foreignKey: 'awayTeamId', as: 'awayTeam' });
 
-export default MatcherModel;
+export default MatchesModel;

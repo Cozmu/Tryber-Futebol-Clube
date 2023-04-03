@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-interface IMatcherController {
+interface IMatchesController {
   listAll(req:Request, res:Response):Promise<Response>
 }
 
-export default IMatcherController;
+export default IMatchesController;

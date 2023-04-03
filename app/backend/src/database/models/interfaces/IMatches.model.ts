@@ -1,4 +1,4 @@
-interface IMatcher {
+interface IMatches {
   id:number;
   homeTeamId:number;
   homeTeamGoals:number;
@@ -7,4 +7,4 @@ interface IMatcher {
   inProgress:number;
 }
 
-export default IMatcher;
+export default IMatches;
