@@ -6,10 +6,9 @@ import chaiHttp = require('chai-http');
 import { app } from '../app';
 
 import { Response } from 'superagent';
-// import { Model } from 'sequelize';
 import { userMock, tokenModel } from './mocks/users.mock';
-import IUser from '../database/models/interfaces/IUser.model';
 import UserModel from '../database/models/Users.model';
+import * as jwt from 'jsonwebtoken'
 
 chai.use(chaiHttp);
 
@@ -116,7 +115,7 @@ describe('Cobrir rota /login/role com metodo get', () => {
     chaiHttpResponse = await chai.request(app)
     .get('/login/role').set('Authorization', 'xxx');
 
-    expect(chaiHttpResponse).to.have.status(401);
+    expect(chaiHttpResponse.status).to.be.equal(401);
     expect(chaiHttpResponse.body.message).to.be.equal('Token must be a valid token');
   });  
 
@@ -124,16 +123,20 @@ describe('Cobrir rota /login/role com metodo get', () => {
     chaiHttpResponse = await chai.request(app)
     .get('/login/role');
 
-    expect(chaiHttpResponse).to.have.status(401);
+    expect(chaiHttpResponse.status).to.be.equal(401);
     expect(chaiHttpResponse.body.message).to.be.equal('Token not found');
   });
 
   it('Verifica se e possível acessar /login/role', async () => {
+    sinon
+    .stub(jwt, 'verify')
+    .resolves(userMock);
+
     chaiHttpResponse = await chai.request(app).get('/login/role')
     .set('Authorization', tokenModel);
 
-    expect(chaiHttpResponse).to.have.status(200);
     expect(chaiHttpResponse.body).to.be.deep.equal({ role: 'user' });
+    expect(chaiHttpResponse.status).to.be.equal(200);
   });  
 
   afterEach(() => {

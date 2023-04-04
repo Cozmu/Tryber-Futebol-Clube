@@ -17,6 +17,8 @@ class UserService implements IUserService {
       where: { email },
       attributes: ['role'],
     });
+    console.log(result);
+
     return result;
   }
 
