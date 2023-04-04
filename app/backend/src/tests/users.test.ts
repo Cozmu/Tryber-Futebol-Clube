@@ -127,7 +127,7 @@ describe('Cobrir rota /login/role com metodo get', () => {
     expect(chaiHttpResponse.body.message).to.be.equal('Token not found');
   });
 
-  it('Verifica se e possível acessar /login/role', async () => {
+  it('Verifica se e possível acessar /login/role', async () => { // problema
     sinon
     .stub(jwt, 'verify')
     .resolves(userMock);
