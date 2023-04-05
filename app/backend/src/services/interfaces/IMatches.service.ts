@@ -1,9 +1,14 @@
-import IMatches, { IRequestScoreboard } from '../../database/models/interfaces/IMatches.model';
+import IMatches, {
+  IRequestScoreboard,
+  INewMatcherRequest,
+} from '../../database/models/interfaces/IMatches.model';
 
 interface IMatchesService {
   getAll(InProgress:string):Promise<IMatches[]>,
-  updateMatchProgression(id:number): Promise<number | void>,
-  updateMatchScore(id:number, body:IRequestScoreboard): Promise<void>
+  updateMatchesProgression(id:number): Promise<number | void>,
+  getMatchesById(id:number): Promise<void>,
+  updateMatchesScore(id:number, body:IRequestScoreboard): Promise<void>
+  insertNewMatcher(newMatche: INewMatcherRequest): Promise<IMatches>
 }
 
 export default IMatchesService;

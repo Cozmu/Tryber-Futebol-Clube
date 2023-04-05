@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 const requestRequiredFields = {
   user: ['email', 'password'],
   scoreboard: ['homeTeamGoals', 'awayTeamGoals'],
+  newMatch: ['homeTeamId', 'awayTeamId', 'homeTeamGoals', 'awayTeamGoals'],
 };
 
 const validateRequiredFields = (key: keyof typeof requestRequiredFields) =>

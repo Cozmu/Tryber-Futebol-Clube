@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import ITeamsService from '../services/interfaces/ITeams.service';
 import ITeamsController from './interfaces/ITeams.controller';
 
@@ -12,13 +12,14 @@ class TeamsController implements ITeamsController {
     return res.status(200).json(teamsResult);
   }
 
-  async listById(req: Request, res:Response): Promise<Response> {
-    const { id } = req.params;
-    const teamResult = await this._teamsService.getById(Number(id));
-    if (teamResult === null) {
-      return res.status(404).json({ message: 'Time não encontrado' });
+  async listById(req: Request, res:Response, next:NextFunction): Promise<Response | void> {
+    try {
+      const { id } = req.params;
+      const teamResult = await this._teamsService.getById(Number(id));
+      return res.status(200).json(teamResult);
+    } catch (error) {
+      next(error);
     }
-    return res.status(200).json(teamResult);
   }
 }
 

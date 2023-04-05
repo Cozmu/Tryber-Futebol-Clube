@@ -10,5 +10,7 @@ interface IMatches extends IRequestScoreboard {
   inProgress:boolean;
 }
 
-export { IRequestScoreboard };
+type INewMatcherRequest = Omit<IMatches, 'id' | 'inProgress'>;
+
+export { IRequestScoreboard, INewMatcherRequest };
 export default IMatches;

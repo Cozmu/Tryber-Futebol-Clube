@@ -1,3 +1,4 @@
+import InvalidFieldsError from '../errors/invalide-fields-error';
 import NotFoundError from '../errors/not-found-error';
 import IMatches from '../database/models/interfaces/IMatches.model';
 import IMatchesValidate from './interfaces/IMatchesValidation';
@@ -20,6 +21,12 @@ class MatchesValidate implements IMatchesValidate {
   checkIfItIsAGameInProgress = (matche:IMatches):void => {
     if (matche.inProgress === false) {
       throw new InvalidParamError('Match already finished');
+    }
+  };
+
+  checkIfTeamsAreEqual = (awayTeamId:number, homeTeamId:number):void => {
+    if (awayTeamId === homeTeamId) {
+      throw new InvalidFieldsError('Unable to add match with equal teams');
     }
   };
 }
