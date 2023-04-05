@@ -115,7 +115,7 @@ describe('Cobrir rota /teams/:id com metodo get ', () => {
     
   });
 
-  it('Verifique se através da rota /temas/:id com id inexistente a menssagem "Time não encontrado" e retornado', async () => {
+  it('Verifique se através da rota /temas/:id com id inexistente a menssagem "There is no team with such id!" e retornado', async () => {
     sinon
       .stub(TeamsModel, 'findByPk')
       .resolves(null);
@@ -123,7 +123,7 @@ describe('Cobrir rota /teams/:id com metodo get ', () => {
     chaiHttpResponse = await chai.request(app).get('/teams/99999999999999999999');
 
     expect(chaiHttpResponse.status).to.be.equal(404);
-    expect(chaiHttpResponse.body).to.deep.equal({ message: 'Time não encontrado' });
+    expect(chaiHttpResponse.body).to.deep.equal({ message: 'There is no team with such id!' });
   });
 
   afterEach(() => {

@@ -305,4 +305,32 @@ const matcheInvalid = {
   "inProgress": false,
 };
 
-export { matches, matchesInProgress, matchesFinished, checkExist, matcheInvalid }
+const homeTeam = {
+  "id": 1,
+  "teamName": "Avaí/Kindermann"
+}
+
+const awayTeam = {
+  "id": 2,
+  "teamName": "Bahia"
+}
+
+const resultMatcher = {
+  "id": 50,
+  "awayTeamGoals": 2,
+  "awayTeamId": 2,
+  "homeTeamGoals": 2,
+  "homeTeamId": 1,
+  "inProgress": true
+}
+
+export {
+  resultMatcher,
+  awayTeam,
+  homeTeam,
+  matches, 
+  matchesInProgress, 
+  matchesFinished,
+  checkExist, 
+  matcheInvalid,
+}

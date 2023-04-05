@@ -8,7 +8,17 @@ import * as jwt from 'jsonwebtoken'
 import { jwtResult, tokenModel } from './mocks/users.mock'
 import { Response } from 'superagent';
 import MatchesModel from '../database/models/Matchers.model';
-import { matches, matchesInProgress, matchesFinished, checkExist, matcheInvalid } from './mocks/matches.mock';
+import { 
+  matches, 
+  matchesInProgress, 
+  matchesFinished, 
+  checkExist, 
+  matcheInvalid,
+  awayTeam,
+  homeTeam,
+  resultMatcher,
+} from './mocks/matches.mock';
+import TeamsModel from '../database/models/Teams.model';
 
 
 chai.use(chaiHttp);
@@ -471,6 +481,123 @@ describe('Cobrir rota /matches/:id/finish com metodo path', () => {
     expect(chaiHttpResponse.body.message).to.be.equal('Finished');
   });
   
+  afterEach(() => {
+    sinon.restore();
+  });
+});
+
+describe('Cobrir rota /matches com o metodo post', () => {
+  let chaiHttpResponse:Response;
+  it('Verifica se nao e possível acessar a rota /matches sem um token', async () => {
+    chaiHttpResponse = await chai.request(app).post('/matches')
+
+    expect(chaiHttpResponse.status).to.be.equal(401);
+    expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Token not found' });
+  });
+
+  it('Verifica se nao e possível acessar a rota /matches sem um token valido', async () => {
+    chaiHttpResponse = await chai.request(app)
+      .post('/matches').set('Authorization', 'xxx');
+
+    expect(chaiHttpResponse.status).to.be.equal(401);
+    expect(chaiHttpResponse.body.message).to.be.equal('Token must be a valid token');
+  });
+
+  it('Verifica se nao e possível acessar a rota /matches os campos obrigatorios', async () => {
+    sinon
+      .stub(jwt, 'verify')
+      .returns({ data: jwtResult } as unknown as void);
+    chaiHttpResponse = await chai.request(app)
+      .post('/matches')
+      .set('Authorization', tokenModel);
+
+    expect(chaiHttpResponse.status).to.be.equal(400);
+    expect(chaiHttpResponse.body.message).to.be.equal('All fields must be filled');
+  });
+
+  it('Verifica se nao e possível acessar a rota /matches os campos obrigatorios', async () => {
+    sinon
+      .stub(jwt, 'verify')
+      .returns({ data: jwtResult } as unknown as void);
+    chaiHttpResponse = await chai.request(app)
+      .post('/matches')
+      .set('Authorization', tokenModel);
+
+    expect(chaiHttpResponse.status).to.be.equal(400);
+    expect(chaiHttpResponse.body.message).to.be.equal('All fields must be filled');
+  });
+
+  it('Verifica se nao e possível acessar a rota /matches os campos obrigatorios', async () => {
+    sinon
+      .stub(TeamsModel, 'findByPk')
+      .resolves(null);
+    sinon
+      .stub(jwt, 'verify')
+      .returns({ data: jwtResult } as unknown as void);
+    chaiHttpResponse = await chai.request(app)
+      .post('/matches')
+      .send({
+        "homeTeamId": 99999999999999, 
+        "awayTeamId": 2,
+        "homeTeamGoals": 2,
+        "awayTeamGoals": 2
+      })
+      .set('Authorization', tokenModel);
+
+    expect(chaiHttpResponse.status).to.be.equal(404);
+    expect(chaiHttpResponse.body.message).to.be.equal('There is no team with such id!');
+  });
+
+  it('Verifica se nao e possível acessar a rota /matches os times iguais', async () => {
+    sinon
+      .stub(jwt, 'verify')
+      .returns({ data: jwtResult } as unknown as void);
+    chaiHttpResponse = await chai.request(app)
+      .post('/matches')
+      .send({
+        "homeTeamId": 9, 
+        "awayTeamId": 9,
+        "homeTeamGoals": 2,
+        "awayTeamGoals": 2
+      })
+      .set('Authorization', tokenModel);
+
+    expect(chaiHttpResponse.status).to.be.equal(422);
+    expect(chaiHttpResponse.body.message).to.be.equal('It is not possible to create a match with two equal teams');
+  });
+
+  it('Verifica se e possível acessar a rota /matches e adicionar uma nova partida', async () => {
+    sinon
+      .stub(TeamsModel, 'findByPk')
+      .resolves(homeTeam as TeamsModel)
+      .resolves(awayTeam as TeamsModel);
+    sinon
+      .stub(MatchesModel, 'create')
+      .resolves(resultMatcher as MatchesModel);
+    sinon
+      .stub(jwt, 'verify')
+      .returns({ data: jwtResult } as unknown as void);
+    chaiHttpResponse = await chai.request(app)
+      .post('/matches')
+      .send({
+        "awayTeamId": 2,
+        "awayTeamGoals": 2,
+        "homeTeamGoals": 2,
+        "homeTeamId": 1, 
+      })
+      .set('Authorization', tokenModel);
+
+    expect(chaiHttpResponse.status).to.be.equal(201);
+    expect(chaiHttpResponse.body).to.be.deep.equal({
+      "id": 50,
+      "awayTeamGoals": 2,
+      "awayTeamId": 2,
+      "homeTeamGoals": 2,
+      "homeTeamId": 1,
+      "inProgress": true
+    });
+  });
+
   afterEach(() => {
     sinon.restore();
   });
