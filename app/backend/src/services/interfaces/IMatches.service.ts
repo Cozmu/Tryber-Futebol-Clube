@@ -2,7 +2,7 @@ import IMatches, { IRequestScoreboard } from '../../database/models/interfaces/I
 
 interface IMatchesService {
   getAll(InProgress:string):Promise<IMatches[]>,
-  updateMatchProgression(id:number): Promise<void>,
+  updateMatchProgression(id:number): Promise<number | void>,
   updateMatchScore(id:number, body:IRequestScoreboard): Promise<void>
 }
 

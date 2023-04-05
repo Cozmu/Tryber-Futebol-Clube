@@ -11,6 +11,12 @@ class MatchesValidate implements IMatchesValidate {
     this.checkIfItIsAGameInProgress(matche);
   };
 
+  checkUpdate = (affectedRows:number):void => {
+    if (affectedRows === 0) {
+      throw new NotFoundError('Match not found or already finished');
+    }
+  };
+
   checkIfItIsAGameInProgress = (matche:IMatches):void => {
     if (matche.inProgress === false) {
       throw new InvalidParamError('Match already finished');

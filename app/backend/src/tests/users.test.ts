@@ -6,13 +6,14 @@ import chaiHttp = require('chai-http');
 import { app } from '../app';
 
 import { Response } from 'superagent';
-import { userMock, tokenModel } from './mocks/users.mock';
+import { userMock, tokenModel, jwtResult } from './mocks/users.mock';
 import UserModel from '../database/models/Users.model';
 import * as jwt from 'jsonwebtoken'
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
+
 
 describe('Cobrir rota /login com metodo post', () => {
   let chaiHttpResponse:Response;
@@ -127,16 +128,19 @@ describe('Cobrir rota /login/role com metodo get', () => {
     expect(chaiHttpResponse.body.message).to.be.equal('Token not found');
   });
 
-  it('Verifica se e possível acessar /login/role', async () => { // problema
+  it('Verifica se e possível acessar /login/role', async () => { 
+    sinon
+      .stub(UserModel, 'findOne')
+      .resolves({ role: 'user' } as UserModel);    
     sinon
     .stub(jwt, 'verify')
-    .resolves(userMock);
+    .returns({ data: jwtResult } as unknown as void);
 
     chaiHttpResponse = await chai.request(app).get('/login/role')
     .set('Authorization', tokenModel);
 
     expect(chaiHttpResponse.body).to.be.deep.equal({ role: 'user' });
-    expect(chaiHttpResponse.status).to.be.equal(200);
+    expect(chaiHttpResponse.status).to.be.equal(200) ;
   });  
 
   afterEach(() => {

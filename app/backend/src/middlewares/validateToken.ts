@@ -1,17 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 import authFunctions from '../auth/authFunctions';
+import InvalidParamError from '../errors/invalide-params-error';
 
 const validateToken = (req:Request, res:Response, next:NextFunction) => {
+  const { authorization } = req.headers;
+  if (!authorization) {
+    throw new InvalidParamError('Token not found');
+  }
   try {
-    const { authorization } = req.headers;
-    if (!authorization) {
-      return res.status(401).json({ message: 'Token not found' });
-    }
     const payload = authFunctions.verifyToken(authorization);
     req.body.user = payload;
     return next();
   } catch (error) {
-    res.status(401).json({ message: 'Token must be a valid token' });
+    throw new InvalidParamError('Token must be a valid token');
   }
 };
 

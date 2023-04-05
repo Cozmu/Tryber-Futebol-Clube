@@ -29,11 +29,12 @@ class MatchesService implements IMatchesService {
     });
   }
 
-  async updateMatchProgression(id:number): Promise<void> {
-    await this._matchesModel.update(
+  async updateMatchProgression(id:number): Promise<number | void> {
+    const [result] = await this._matchesModel.update(
       { inProgress: false },
       { where: { id } },
     );
+    this._matchesValidate.checkUpdate(result);
   }
 
   async getMatchesById(id:number): Promise<void> {
@@ -43,7 +44,7 @@ class MatchesService implements IMatchesService {
 
   async updateMatchScore(id:number, body:IRequestScoreboard): Promise<void> {
     await this.getMatchesById(id);
-    await this._matchesModel.update(
+    await this._matchesModel.update( // retorna [affectedCount: number]
       body,
       { where: { id, inProgress: true } },
     );
