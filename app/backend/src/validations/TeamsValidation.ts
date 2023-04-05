@@ -5,7 +5,7 @@ import ITeamsValidation from './interfaces/ITeamsValidation';
 class TeamsValidation implements ITeamsValidation {
   validationTeam = (team: ITeams | null):void => {
     if (team === null) {
-      throw new NotFoundError('Team not found');
+      throw new NotFoundError('There is no team with such id!');
     }
   };
 }

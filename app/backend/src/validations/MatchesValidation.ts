@@ -26,7 +26,7 @@ class MatchesValidate implements IMatchesValidate {
 
   checkIfTeamsAreEqual = (awayTeamId:number, homeTeamId:number):void => {
     if (awayTeamId === homeTeamId) {
-      throw new InvalidFieldsError('Unable to add match with equal teams');
+      throw new InvalidFieldsError('It is not possible to create a match with two equal teams');
     }
   };
 }
