@@ -1,10 +1,16 @@
-import { NextFunction, Request, Response } from 'express';
-import ILeadboard from './interfaces/ILeadboard.controller';
+import { Request, Response } from 'express';
+import LeadboardService from '../services/Leadboard.service';
+import ILeadboardController from './interfaces/ILeadboard.controller';
 
-class Leadboard implements ILeadboard {
-  async listLeadboard(req:Request, res:Response):Promise<Response> {
-    const result = await 
+class LeadboardController implements ILeadboardController {
+  constructor(
+    private _leadboardService:LeadboardService,
+  ) {}
+
+  async listHomeLeadboard(_req:Request, res:Response):Promise<Response> {
+    const result = await this._leadboardService.listHomeLeadboard();
+    return res.status(200).json(result);
   }
 }
 
-export default Leadboard;
+export default LeadboardController;
