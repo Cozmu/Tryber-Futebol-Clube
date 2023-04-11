@@ -11,6 +11,11 @@ class LeadboardController implements ILeadboardController {
     const result = await this._leadboardService.listHomeLeadboard();
     return res.status(200).json(result);
   }
+
+  async listAwayLeadboard(_req:Request, res:Response):Promise<Response> {
+    const result = await this._leadboardService.listAwayLeadboard();
+    return res.status(200).json(result);
+  }
 }
 
 export default LeadboardController;

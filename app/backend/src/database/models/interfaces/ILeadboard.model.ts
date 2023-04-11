@@ -3,7 +3,7 @@ interface ILeadboard {
   totalPoints: number | undefined,
   totalGames: number | undefined,
   totalVictories: number | undefined,
-  totalDraws: number,
+  totalDraws: number | undefined,
   totalLosses: number | undefined,
   goalsFavor: number | false | undefined,
   goalsOwn: number | false | undefined,

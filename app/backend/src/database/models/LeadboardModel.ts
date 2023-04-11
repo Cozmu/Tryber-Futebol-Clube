@@ -25,7 +25,7 @@ class LeadboardModel {
       return matches.filter((e) => e.homeTeamId === teamId).length;
     }
     if (awayOrHome === 'awayTeamId') {
-      return matches.filter((e) => e.awayTeamGoals === teamId).length;
+      return matches.filter((e) => e.awayTeamId === teamId).length;
     }
   };
 
@@ -77,9 +77,18 @@ class LeadboardModel {
     }
   };
 
-  requestDraws = (teamId:number, matches:MatchesModel[]) => matches
-    .map((match) => match.homeTeamId === teamId && match.homeTeamGoals === match.awayTeamGoals)
-    .reduce((acc, cur) => Number(acc) + Number(cur), 0);
+  requestDraws = (teamId:number, awayOrHome:string, matches:MatchesModel[]) => {
+    if (awayOrHome === 'homeTeamId') {
+      return matches
+        .map((match) => match.homeTeamId === teamId && match.homeTeamGoals === match.awayTeamGoals)
+        .reduce((acc, cur) => Number(acc) + Number(cur), 0);
+    }
+    if (awayOrHome === 'awayTeamId') {
+      return matches
+        .map((match) => match.awayTeamId === teamId && match.homeTeamGoals === match.awayTeamGoals)
+        .reduce((acc, cur) => Number(acc) + Number(cur), 0);
+    }
+  };
 
   requestGoalsBalance = (teamId:number, awayOrHome:string, matches:MatchesModel[]) => {
     if (awayOrHome === 'homeTeamId') {
@@ -95,12 +104,12 @@ class LeadboardModel {
   requestTotalPoints = (teamId:number, awayOrHome:string, matches:MatchesModel[]) => {
     if (awayOrHome === 'homeTeamId') {
       const victories = this.requestWins(teamId, awayOrHome, matches);
-      const draws = this.requestDraws(teamId, matches);
+      const draws = this.requestDraws(teamId, awayOrHome, matches);
       return Number(victories) * 3 + Number(draws);
     }
     if (awayOrHome === 'awayTeamId') {
       const victories = this.requestWins(teamId, awayOrHome, matches);
-      const draws = this.requestDraws(teamId, matches);
+      const draws = this.requestDraws(teamId, awayOrHome, matches);
       return Number(victories) * 3 + Number(draws);
     }
   };
@@ -116,7 +125,7 @@ class LeadboardModel {
       const totalGames = this.requestTotalGames(teamId, awayOrHome, matches);
       const totalPoints = this.requestTotalPoints(teamId, awayOrHome, matches);
 
-      return (Number(totalPoints) / (Number(totalGames) * 3)) * 100;
+      return ((Number(totalPoints) / (Number(totalGames) * 3)) * 100).toFixed(2);
     }
   };
 

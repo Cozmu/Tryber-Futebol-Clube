@@ -13,5 +13,6 @@ const leadboardService = new LeadboardService(leadboardModel);
 const leadboardController = new LeadboardController(leadboardService);
 
 router.get('/home', leadboardController.listHomeLeadboard.bind(leadboardController));
+router.get('/away', leadboardController.listAwayLeadboard.bind(leadboardController));
 
 export default router;
