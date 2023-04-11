@@ -1,5 +1,3 @@
-// import sequelize = require('sequelize');
-
 const totalVictories = 'COUNT(CASE WHEN home_team_goals > away_team_goals THEN 1 END)';
 const totalDraws = 'COUNT(CASE WHEN home_team_goals = away_team_goals THEN 1 END)';
 const totalLosses = 'COUNT(CASE WHEN home_team_goals < away_team_goals THEN 1 END)';

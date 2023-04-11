@@ -37,16 +37,6 @@ class LeadboardService {
     });
     return request;
   }
-
-  // const result = this.addScoreAndEfficiency(request);
-  // addScoreAndEfficiency = (request:ILeadboard[]) => {
-  //   for (let i = 0; i < request.length; i += 1) {
-  //     request[i].totalPoints = (request[i].totalVictories * 3) + request[i].totalDraws;
-  //     request[i].efficiency = (request[i].totalPoints / (request[i].totalGames * 3)) * 100;
-  //   }
-  //   console.log('entrou');
-  //   return request;
-  // };
 }
 
 export default LeadboardService;

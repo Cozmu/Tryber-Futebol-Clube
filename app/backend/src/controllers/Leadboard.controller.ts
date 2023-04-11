@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import LeadboardService from '../services/Leadboard.service';
+import LeadboardService from '../services/LeadBoard.service';
 import ILeadboardController from './interfaces/ILeadboard.controller';
 
 class LeadboardController implements ILeadboardController {

@@ -1,14 +1,14 @@
 interface ILeadboard {
   name: string,
-  totalPoints: number,
-  totalGames: number,
-  totalVictories: number,
+  totalPoints: number | undefined,
+  totalGames: number | undefined,
+  totalVictories: number | undefined,
   totalDraws: number,
-  totalLosses: number,
-  goalsFavor: number,
-  goalsOwn: number,
-  goalsBalance: number,
-  efficiency: number,
+  totalLosses: number | undefined,
+  goalsFavor: number | false | undefined,
+  goalsOwn: number | false | undefined,
+  goalsBalance: number | undefined,
+  efficiency: string | number | undefined,
 }
 
 export default ILeadboard;

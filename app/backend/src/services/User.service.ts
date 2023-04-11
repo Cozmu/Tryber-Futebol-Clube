@@ -25,7 +25,6 @@ class UserService implements IUserService {
     this._userValidation.validateFields(email, password);
     const result = await this._userModel.findOne({
       where: { email },
-      // attributes: { exclude: ['password'] },
     });
     if (!result || !bcryt.compareSync(password, result.password)) {
       throw new InvalidParamError('Invalid email or password');
