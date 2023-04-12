@@ -101,6 +101,28 @@ class LeadboardModel {
     }
   };
 
+  balanceAll = (
+    homeGoalsFavor:number | false | undefined,
+    awayGoalsFavor:number | false | undefined,
+    homeGoalsOwn:number | false | undefined,
+    awayGoalsOwn:number | false | undefined,
+  ) => {
+    const goalsFavor = Number(homeGoalsFavor) + Number(awayGoalsFavor);
+    const goalsOwn = Number(homeGoalsOwn) + Number(awayGoalsOwn);
+    return goalsFavor - goalsOwn;
+  };
+
+  efficiency = (
+    homePoints:number | undefined,
+    awayPoints:number | undefined,
+    homeGame:number | undefined,
+    awayGame:number | undefined,
+  ) => {
+    const totalPoints = Number(homePoints) + Number(awayPoints);
+    const totalGames = Number(homeGame) + Number(awayGame);
+    return ((totalPoints / (totalGames * 3)) * 100).toFixed(2);
+  };
+
   requestTotalPoints = (teamId:number, awayOrHome:string, matches:MatchesModel[]) => {
     if (awayOrHome === 'homeTeamId') {
       const victories = this.requestWins(teamId, awayOrHome, matches);
@@ -130,7 +152,7 @@ class LeadboardModel {
   };
 
   requestOrder = (allFields:ILeadboard[]) => {
-    const result = allFields.sort((a, b) => {
+    const result = allFields.sort((a:ILeadboard, b:ILeadboard) => {
       if (a.totalPoints !== b.totalPoints) {
         return Number(b.totalPoints) - Number(a.totalPoints);
       }

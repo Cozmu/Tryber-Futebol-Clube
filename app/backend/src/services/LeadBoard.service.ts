@@ -49,13 +49,25 @@ class LeadboardService implements ILeadboardService {
     return result;
   }
 
-  async listLeadboard():Promise<ILeadboard[]> { // corrigir
+  async listLeadboard():Promise<ILeadboard[]> {
     const awayLeadboard = await this.listAwayLeadboard();
     const homeLeadboard = await this.listHomeLeadboard();
-    return [
-      ...awayLeadboard,
-      ...homeLeadboard,
-    ];
+    return this._leadboardModel.requestOrder(homeLeadboard.map((a) => {
+      const b = awayLeadboard.find((teamAway) => a.name === teamAway.name) as ILeadboard;
+      return { name: a.name,
+        totalPoints: Number(a.totalPoints) + Number(b.totalPoints),
+        totalGames: Number(a.totalGames) + Number(b.totalGames),
+        totalVictories: Number(a.totalVictories) + Number(b.totalVictories),
+        totalDraws: Number(a.totalDraws) + Number(b.totalDraws),
+        totalLosses: Number(a.totalLosses) + Number(b.totalLosses),
+        goalsFavor: Number(a.goalsFavor) + Number(b.goalsFavor),
+        goalsOwn: Number(a.goalsOwn) + Number(b.goalsOwn),
+        goalsBalance: this._leadboardModel
+          .balanceAll(a.goalsFavor, b.goalsFavor, a.goalsOwn, b.goalsOwn),
+        efficiency: this._leadboardModel
+          .efficiency(a.totalPoints, b.totalPoints, a.totalGames, b.totalGames),
+      };
+    }));
   }
 }
 
