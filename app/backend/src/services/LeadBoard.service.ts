@@ -48,6 +48,15 @@ class LeadboardService implements ILeadboardService {
     const result = this._leadboardModel.requestOrder(requestAllFields);
     return result;
   }
+
+  async listLeadboard():Promise<ILeadboard[]> { // corrigir
+    const awayLeadboard = await this.listAwayLeadboard();
+    const homeLeadboard = await this.listHomeLeadboard();
+    return [
+      ...awayLeadboard,
+      ...homeLeadboard,
+    ];
+  }
 }
 
 export default LeadboardService;

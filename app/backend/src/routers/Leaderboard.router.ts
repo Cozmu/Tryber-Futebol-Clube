@@ -9,9 +9,9 @@ const router = Router();
 
 const leadboardModel = new LeadboardModel(MatchesModel, TeamsModel);
 const leadboardService = new LeadboardService(leadboardModel);
-// const leadboardService = new LeadboardService(MatchesModel);
 const leadboardController = new LeadboardController(leadboardService);
 
+router.get('/', leadboardController.listLeadboard.bind(leadboardController));
 router.get('/home', leadboardController.listHomeLeadboard.bind(leadboardController));
 router.get('/away', leadboardController.listAwayLeadboard.bind(leadboardController));
 
