@@ -1,6 +1,6 @@
 # Sejam bem-vindos ao Trybe Futebol Clube!! ⚽ 🏟️
 
-#### Nesse projeto desenvolvi o BackEnd de uma aplicação cujo objetivo e simular um site informativo sobre partidas e classificações de futebol. Nesse projeto utilizei do banco de dados MySQL para armazenar os dados que uma aplicação FrontEnd consome.
+#### Nesse projeto desenvolvi o BackEnd de uma aplicação cujo objetivo e simular um site informativo sobre partidas e classificações de futebol, onde utilizei do banco de dados MySQL para armazenar os dados que uma aplicação FrontEnd consome.
 
 ## Tecnologias :
 
